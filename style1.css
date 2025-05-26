@@ -1,0 +1,24 @@
+button {
+    padding: 0px;
+    background: #d95753;
+    border: 0;
+}
+
+.btn-size {
+    width: 0px;
+    height: 0px;
+}
+
+.img-size img {
+    width: 30px;
+    height: 30px;
+}
+
+
+  .d1{
+    float: left;
+  width: 19.00%;
+  padding: 8px;
+  text-align: center;
+  }
+  

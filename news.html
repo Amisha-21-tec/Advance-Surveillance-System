@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accident News in India</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .topnav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2b3e50;
+            padding: 15px;
+        }
+        .topnav .title {
+            font-size: 22px;
+            color: #ffdd67;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px; /* Space between links */
+            margin-left: auto; /* Push links to the right */
+            align-items: center; /* Center items vertically */
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 20px;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        .nav-links a:hover {
+            background-color: #EAE4DD; /* Yellow background for hover */
+            color: #2b3e50; /* Change text color for contrast */
+        }
+        .nav-links a.active {
+            background-color: #ffdd67; /* Yellow background for active link */
+            color: #2b3e50; /* Change text color for contrast */
+        }
+        
+        .news-container {
+            max-width: 1500px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .news-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .news-item-content {
+            padding: 15px;
+        }
+        .news-item a {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3b4b;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .news-item p {
+            color: #444;
+            font-size: 14px;
+        }
+        .footer {
+            background-color: #2b3e50;
+            color: #fff;
+            padding: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-section {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #f1c40f; /* Gold color for headings */
+        }
+        
+        .footer-section p,
+        .footer-section ul {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin: 5px 0;
+        }
+        
+        .footer-section a {
+            color:rgb(231, 227, 209); /* Gold color for links */
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px; /* Space between icons */
+        }
+        
+        .social-media a {
+            color:rgb(126, 125, 123); /* Gold color for icons */
+            font-size: 30px; /* Size of the icons */
+        }
+        
+        .social-media a:hover {
+            color: #fff; /* Change color on hover */
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #222;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <div class="logo">
+            <img src="images/logo1.png" alt="Logo" style="height: 40px;"/> <!-- Adjust height as needed -->
+        </div>
+        <div class="title">Welcome to the Weapon & Accident Detection Platform</div>
+        <div class="nav-links">
+            <a href="index.php">Weapon</a>
+            <a href="http://localhost/Final%20Project%20Code/Smart_Survilance_system/Client_Side/index2.php#">Accident</a>
+            <a href="http://localhost/Final%20Project%20Code/Smart_Survilance_system/Client_Side/aboutus.php#">About Us</a>
+            <a href="http://localhost/Final%20Project%20Code/Smart_Survilance_system/Client_Side/analysis.php">Analysis</a>
+            <a class="active" href="news.html">News</a>
+            <a href="index.php?logout='1'" style="color: #fff; padding: 14px 20px; text-decoration: none;">Logout</a> <!-- Logout link -->
+            <div class="notification-icon">
+                <i class="fas fa-bell" style="font-size: 30px; color: #fff;"></i> <!-- Bell icon -->
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="news-container" id="newsContainer"></div>
+
+    <script>
+        const API_KEY = "AIzaSyAcJq_lHnSZBgAwo4vdbfUPlUH8t7Q9oTE";  // Replace with your actual API Key
+        const SEARCH_ENGINE_ID = "45733364a5c8a4a47";  // Replace with your Search Engine ID
+        const QUERY = "accidents in India";  // Search term
+
+        async function fetchNews() {
+            const url = `https://www.googleapis.com/customsearch/v1?q=${QUERY}&cx=${SEARCH_ENGINE_ID}&key=${API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const newsContainer = document.getElementById('newsContainer');
+                newsContainer.innerHTML = ""; // Clear previous results
+                
+                data.items.forEach(news => {
+                    let newsItem = document.createElement("div");
+                    newsItem.classList.add("news-item");
+                    let imageUrl = news.pagemap?.cse_image?.[0]?.src || news.pagemap?.thumbnail?.[0]?.src || "https://via.placeholder.com/300x200?text=No+Image";
+                    newsItem.innerHTML = `
+                        <img src="${imageUrl}" alt="News Image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=Image+Not+Found';"/>
+                        <div>
+                        <a href="${news.link}" target="_blank">${news.title}</a>
+                        <p>${news.snippet}</p>
+                        </div>
+                    `;
+                    newsContainer.appendChild(newsItem);
+                });
+            } catch (error) {
+                console.error("Error fetching news:", error);
+                document.getElementById('newsContainer').innerHTML = "<p>Failed to load news.</p>";
+            }
+        }
+
+        fetchNews();
+    </script>
+
+    <footer class="footer">
+        <div class="footer-container">
+        <div class="footer-section">
+            <img src="images/logo1.png" alt="Company Logo" style="height: 150px; margin-bottom: 10px;"> <!-- Adjust height as needed -->
+        </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@example.com</p>
+                <p>Phone: (123) 456-7890</p>
+                <p>Address: 123 Main St, City, Country</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-media">
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; Weapon & Accident Detection Platform. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
